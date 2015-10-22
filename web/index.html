@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<!--
+  Copyright (c) 2015, Valentyn Shybanov. All rights reserved. Use of this source code
+  is governed by a BSD-style license that can be found in the LICENSE file.
+-->
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="scaffolded-by" content="https://github.com/google/stagehand">
+    <title>Micro-services in GCP/Go</title>
+    <link rel="stylesheet" href="packages/dacsslide/presentation.css">
+    <link rel="stylesheet" href="packages/dacsslide/comment.css">
+    <link rel="stylesheet" href="styles.css">
+    <script async src="main.dart" type="application/dart"></script>
+    <script async src="packages/browser/dart.js"></script>
+</head>
+
+<body presentation-classes>
+    <presentation slides="25" class="hidden">
+        <symbol id="m_bg"><img src="assets/Making-coatings-more-resistant-against-microorganisms.jpg"></symbol>
+        <symbol id="go_bg"><img src="assets/appenginegophercolor.png"></symbol>
+        <symbol id="title2"><img src="assets/CloudPlatform_HorizontalLockup-1-1024x246.png"></symbol>
+        <symbol id="title"><span>Micro</span>-services</symbol>
+        <symbol id="goph"><img src="assets/gopher.png"> </symbol>
+        <symbol id="val"><img src="assets/Valentyn_gde_long.jpg"> </symbol>
+        <symbol id="val_qr"><img src="assets/olo_qr.svg"> </symbol>
+        <symbol id="val_qr2"><img src="assets/slides_microgcp.svg"> </symbol>
+        <symbol id="m_1"><b>Componentized</b> - Microservices should be very small with a single responsibility and be out of process. This is very different from a typical library where components are assembled in process.</symbol>
+        <symbol id="m_2"><b>Message Driven</b> - Microservices should be driven by asynchronous messaging where the intelligence is left up to the microservice implementation and not provided by the messaging fabric</symbol>
+        <symbol id="m_3"><b>Decentralized Data</b> - Each service should manage its own data. You can think of this model as the OO concept of data encapsulation. No service can access the database of another service.</symbol>
+        <symbol id="m_d">software that fits in your head.</symbol>
+        <symbol id="d_n">Dan North, @tastapod</symbol>
+        <symbol id="gae_l"><img src="assets/google-app-engine.png"></symbol>
+        <symbol id="gae">Google App Engine</symbol>
+        <symbol id="gae_f">Focus on your code!</symbol>
+        <symbol id="gae_s" sample="samples/java.yaml" track></symbol>
+        <symbol id="gae_l1">Java</symbol>
+        <symbol id="gae_l2">Python</symbol>
+        <symbol id="gae_l3">Go</symbol>
+        <symbol id="gae_l4">PHP</symbol>
+        <symbol id="gae_mvm"><img src="assets/vmhosting.png"></symbol>
+        <symbol id="gae_mvm_t">Managed VM</symbol>
+        <symbol id="gae_mvm_1">Instances are health-checked, healed as necessary, and co-located with other module instances
+            within the project</symbol>
+        <symbol id="gae_mvm_2">Critical, backwards compatible updates are automatically rolled out to the underlying operating system</symbol>
+        <symbol id="gce_l"><img src="assets/Google_Compute_Engine_logo.png"></symbol>
+
+        <symbol id="why_go">Why Go?</symbol>
+        <symbol id="go_f1">There are very few core concepts (<b>struct</b>, <b>type</b>, <b>interface</b>,
+            <b>channel</b>, <b>function</b>, <b>slice</b>). Everything else is represented in these concepts. Mostly all core libraries are written in Go. Go compiler is written in Go.</symbol>
+        <symbol id="go_f2"><b>Static compilation</b>: Go binary compiled for platform can be run on this platform <b>without any additional requirements</b>. There is an possibility to «bundle» data into binary, so this binary could be supplied «as-is» (not archive that need to unpack).</symbol>
+        <symbol id="go_f3">It provides <b>styling</b> guides out of the box. «go fmt» will re-format code so all code would be in same style. So any Go developer can easily read Go code. Also in contains «go vet» command that <b>check program</b> for common mistakes</symbol>
+        <symbol id="go_f4">In case of new version of Go is released, and there is some breaking change, «go fix» fill analyze source code and fix it. All changes are or <b>100% back-compatable</b> or could be fixed.</symbol>
+        <symbol id="demo">Demo</symbol>
+        <symbol id="gcp_st" >Google Cloud Platform is used and trusted by over 4 million applications</symbol>
+        <symbol id="msvc_t"><b>Micro-services</b> - solution for process, governance, cost of operation and scalability issues, <b>not a technology</b>. </symbol>
+        <symbol id="msvc_t2">We're building the <b>ability to fix</b> a typo on a prominent page of your large system <b>within minutes</b> without touching the rest of the system.</symbol>
+        <symbol id="msvc_t3">We are promising the ability to <b>maneuver an oil tanker as if it was a canoe</b>, in a world full of oil tankers.</symbol>
+        <symbol id="last_bg"></symbol>
+        <symbol id="last_tw"><img src="assets/twinfield.png"></symbol>
+        <symbol id="last_l1">Valentyn Shybanov</symbol>
+        <symbol id="last_l2">olostan@gmail.com</symbol>
+        <symbol id="last_l3">http://olostan.name</symbol>
+        <symbol id="last_kudos">Kudos to Dan North @tastapod, Dejan Glozic @dglozic,Martin Fowler @martinfowler and other great people who
+        contribute in understanding and implementing micro-services. Special thanks to Google for their great products.</symbol>
+
+        <comment slide="1">Micro-services in Google Cloud Platform</comment>
+        <comment slide="2">My name is Valentyn Shybanov. You can find more information on <a href="http://olostan.name/">http://olostan.name/</a></comment>
+        <comment slide="3">There are three simple principles of micro-services. First one - isolated logical-bound components.</comment>
+        <comment slide="4">Second - asynchronous messaging between services. But no single "enterprise service bus", let
+            service decide the best way to communicate. HTTP/1, HTTP/2, REST, WCF...</comment>
+        <comment slide="5">And last one - each service should store its own data. No single Database - that means no DB bottleneck,
+        no single decision about relational vs not-relational databases,</comment>
+        <comment slide="6">But what is "micro"? Does that mean that each service should be 100 lines of code? 1000? How to
+        understand is service "micro" or not?</comment>
+        <comment slide="7">I like how Dan North defined this. As long as you can fully understand bounds of service, understand
+        all dependencies, that mean that it is good candidate for micro-service.</comment>
+        <comment slide="8">So let's take a look what Google Cloud Platform can suggest: First and the most easiest is Google App Engine</comment>
+        <comment slide="9">With GAE you can focus on code. Everything else is handled by Google. You write code, Google do
+        building, deployment, health monitoring, load balancing - everything except writing code of your app!</comment>
+        <comment slide="10">If you have, for example, Java app, all you need is to add single file that describes endpoints</comment>
+        <comment slide="11">There are couple of restrictions: like set of languages, that could be used, not full SDK, access to system etc</comment>
+        <comment slide="12">But if it not enough, you can use Managed VM: In this case you can use additional features, like
+            parallel execution and even other languages (like Dart),</comment>
+        <comment slide="13">Still Google take care about lots of things like hearth checking</comment>
+        <comment slide="14">OS is updated automatically giving reliable safe system</comment>
+        <comment slide="15">So why Go is good for development of big cloud apps?</comment>
+        <comment slide="16">Easy to write code</comment>
+        <comment slide="17">Easy to run app</comment>
+        <comment slide="18">Easy read/learn other's code</comment>
+        <comment slide="19">Easy to maintain</comment>
+        <comment slide="20">https://github.com/olostan/olo-grid</comment>
+        <comment slide="24">Please feel free to contact me!</comment>
+
+    </presentation>
+</body>
+</html>
